@@ -84,15 +84,27 @@ NSString *const kFLEXNetworkRecorderResponseCacheLimitDefaultsKey = @"com.flex.r
 }
 
 - (NSArray<FLEXHTTPTransaction *> *)HTTPTransactions {
-    return self.orderedHTTPTransactions.copy;
+    __block NSArray* array = [NSArray new];
+    dispatch_sync(self.queue, ^{
+        array = self.orderedHTTPTransactions.copy;
+    });
+    return array;
 }
 
 - (NSArray<FLEXWebsocketTransaction *> *)websocketTransactions {
-    return self.orderedWSTransactions.copy;
+    __block NSArray* array = [NSArray new];
+    dispatch_sync(self.queue, ^{
+        array = self.orderedWSTransactions.copy;
+    });
+    return array;
 }
 
 - (NSArray<FLEXFirebaseTransaction *> *)firebaseTransactions {
-    return self.orderedFirebaseTransactions.copy;
+    __block NSArray* array = [NSArray new];
+    dispatch_sync(self.queue, ^{
+        array = self.orderedFirebaseTransactions.copy;
+    });
+    return array;
 }
 
 - (NSData *)cachedResponseBodyForTransaction:(FLEXHTTPTransaction *)transaction {

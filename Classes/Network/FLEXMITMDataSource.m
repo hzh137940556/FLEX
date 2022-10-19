@@ -23,7 +23,12 @@
     
     return ds;
 }
-
+- (NSArray*) getAllTransactions{
+    return  _allTransactions;
+}
+- (NSArray*)getTransactions {
+    return _transactions.copy;
+}
 - (BOOL)isFiltered {
     return self.filterString.length > 0;
 }
@@ -72,11 +77,13 @@
 
 - (void)setTransactions:(NSArray *)transactions {
     self.filteredTransactions = transactions;
+    
 }
 
 - (void)updateBytesReceived {
     NSInteger bytesReceived = 0;
-    for (FLEXNetworkTransaction *transaction in self.transactions) {
+    NSArray* transactions = self.transactions.copy;
+    for (FLEXNetworkTransaction *transaction in transactions) {
         bytesReceived += transaction.receivedDataLength;
     }
     
@@ -85,7 +92,8 @@
 
 - (void)updateFilteredBytesReceived {
     NSInteger filteredBytesReceived = 0;
-    for (FLEXNetworkTransaction *transaction in self.transactions) {
+    NSArray* transactions = self.transactions.copy;
+    for (FLEXNetworkTransaction *transaction in transactions) {
         filteredBytesReceived += transaction.receivedDataLength;
     }
     
